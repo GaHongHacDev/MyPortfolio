@@ -1204,3 +1204,18 @@ section,
   padding-bottom: 10em; /* Hoặc 80px nếu muốn rộng hơn */
   padding-top: 5em;
 }
+
+h2:hover{
+  transform: translateY(-15%);
+  transition: 1s;
+}
+
+h3:hover{
+  transform: translateY(-15%);
+  transition: 0.5s;
+}
+
+li:hover{
+  transform: translateX(5%);
+  transition: 0.5s;
+}
