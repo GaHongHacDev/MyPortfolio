@@ -1,12 +1,4 @@
-/**
-* Template Name: iPortfolio
-* Template URL: https://bootstrapmade.com/iportfolio-bootstrap-portfolio-websites-template/
-* Updated: Jun 29 2024 with Bootstrap v5.3.3
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
-
-(function() {
+(function () {
   "use strict";
 
   /**
@@ -30,14 +22,13 @@
         headerToggle();
       }
     });
-
   });
 
   /**
    * Toggle mobile nav dropdowns
    */
   document.querySelectorAll('.navmenu .toggle-dropdown').forEach(navmenu => {
-    navmenu.addEventListener('click', function(e) {
+    navmenu.addEventListener('click', function (e) {
       e.preventDefault();
       this.parentNode.classList.toggle('active');
       this.parentNode.nextElementSibling.classList.toggle('dropdown-active');
@@ -118,7 +109,7 @@
     new Waypoint({
       element: item,
       offset: '80%',
-      handler: function(direction) {
+      handler: function (direction) {
         let progress = item.querySelectorAll('.progress .progress-bar');
         progress.forEach(el => {
           el.style.width = el.getAttribute('aria-valuenow') + '%';
@@ -137,13 +128,13 @@
   /**
    * Init isotope layout and filters
    */
-  document.querySelectorAll('.isotope-layout').forEach(function(isotopeItem) {
+  document.querySelectorAll('.isotope-layout').forEach(function (isotopeItem) {
     let layout = isotopeItem.getAttribute('data-layout') ?? 'masonry';
     let filter = isotopeItem.getAttribute('data-default-filter') ?? '*';
     let sort = isotopeItem.getAttribute('data-sort') ?? 'original-order';
 
     let initIsotope;
-    imagesLoaded(isotopeItem.querySelector('.isotope-container'), function() {
+    imagesLoaded(isotopeItem.querySelector('.isotope-container'), function () {
       initIsotope = new Isotope(isotopeItem.querySelector('.isotope-container'), {
         itemSelector: '.isotope-item',
         layoutMode: layout,
@@ -152,8 +143,8 @@
       });
     });
 
-    isotopeItem.querySelectorAll('.isotope-filters li').forEach(function(filters) {
-      filters.addEventListener('click', function() {
+    isotopeItem.querySelectorAll('.isotope-filters li').forEach(function (filters) {
+      filters.addEventListener('click', function () {
         isotopeItem.querySelector('.isotope-filters .filter-active').classList.remove('filter-active');
         this.classList.add('filter-active');
         initIsotope.arrange({
@@ -164,14 +155,13 @@
         }
       }, false);
     });
-
   });
 
   /**
    * Init swiper sliders
    */
   function initSwiper() {
-    document.querySelectorAll(".init-swiper").forEach(function(swiperElement) {
+    document.querySelectorAll(".init-swiper").forEach(function (swiperElement) {
       let config = JSON.parse(
         swiperElement.querySelector(".swiper-config").innerHTML.trim()
       );
@@ -189,7 +179,7 @@
   /**
    * Correct scrolling position upon page load for URLs containing hash links.
    */
-  window.addEventListener('load', function(e) {
+  window.addEventListener('load', function (e) {
     if (window.location.hash) {
       if (document.querySelector(window.location.hash)) {
         setTimeout(() => {
@@ -225,14 +215,13 @@
   }
   window.addEventListener('load', navmenuScrollspy);
   document.addEventListener('scroll', navmenuScrollspy);
-  
+
   document.addEventListener("DOMContentLoaded", function () {
-  const menuItems = document.querySelectorAll('.menu-item');
+     const menuItems = document.querySelectorAll('.menu-item');
   const groups = document.querySelectorAll('.skill-group');
   const title = document.getElementById('active-skill-title');
   const skillsSection = document.getElementById('skills');
-
-  const skillBgMap = {
+const skillBgMap = {
     backend: 'bg-backend',
     database: 'bg-database',
     devops: 'bg-devops',
@@ -241,26 +230,61 @@
     frontend: 'bg-frontend'
   };
 
+  // Make the first menu item (backend) active and show its group when the page loads
+  menuItems.forEach(item => {
+    item.classList.remove('active');
+    if (item.getAttribute('data-skill') === 'backend') {
+      item.classList.add('active');
+    }
+  });
+
+  groups.forEach(group => {
+    group.classList.add('d-none'); // Initially hide all skill groups
+    if (group.id === 'backend') {
+      group.classList.remove('d-none');
+      group.classList.add('visible'); // Show and apply fade-in effect for Backend
+    }
+  });
+
+  title.textContent = 'Backend'; // Set initial title
+  setTimeout(() => {
+    title.classList.add('show'); // Apply show effect to title
+  }, 150);
   menuItems.forEach(item => {
     item.addEventListener('click', () => {
+      // Remove 'active' class from all menu items
       menuItems.forEach(btn => btn.classList.remove('active'));
       item.classList.add('active');
 
+      // Get the skill type selected
       const selected = item.getAttribute('data-skill');
 
+      // Update the title with the selected skill
       title.classList.remove('show');
       setTimeout(() => {
         title.textContent = selected.charAt(0).toUpperCase() + selected.slice(1);
         title.classList.add('show');
       }, 150);
 
+      // Toggle visibility of skill groups and apply fade-in effect
       groups.forEach(group => {
-        group.classList.toggle('d-none', group.id !== selected);
+        if (group.id !== selected) {
+          group.classList.add('d-none'); // Hide non-selected group
+          group.classList.remove('visible'); // Remove fade-in effect from non-selected group
+        } else {
+          group.classList.remove('d-none'); // Show selected group
+          
+          // Reset and add fade-in effect for the selected group
+          setTimeout(() => {
+            group.classList.add('visible'); // Apply fade-in effect after a short delay
+          }, 150); // Slight delay for smoother transition
+        }
       });
 
+      // Update the background color of the section based on selected skill
       skillsSection.className = `skills section light-background py-5 ${skillBgMap[selected]}`;
     });
   });
-});
 
+  });
 })();
